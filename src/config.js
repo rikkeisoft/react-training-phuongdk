@@ -1,5 +1,7 @@
 import logo from './imdb.png'
 const config = {
+  api_key: '5f404258',
+  default_movies: 'Avengers',
   page: {
     home: {
       title: 'home',
@@ -12,7 +14,9 @@ const config = {
     search: {
       title: 'search',
       color: '#ffffff',
-      bgcolor: '#E34B4D'
+      bgcolor: '#E34B4D',
+      keywordlength_message: 'Please enter at least three characters without whitespaces',
+      notfound_message: 'There are no matching results'
     },
     info: {
       title: 'info',
@@ -23,6 +27,12 @@ const config = {
       author: 'Do Ky Phuong',
       division: 'Web Department Division 2',
       logo: logo
+    },
+    detail: {
+      title: 'detail',
+      color: '#ffffff',
+      bgcolor: '#0090E9',
+      invalid_message: 'Invalid ID'
     }
   }
 }

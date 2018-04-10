@@ -1,7 +1,9 @@
 import React from 'react'
-function tablecontent (props) {
+import {Link} from 'react-router-dom'
+import loadingicon from '../loadingicon.gif'
+function Tablecontent (props) {
   return (
-    <div>
+    <div className='page-section-wrap'>
       {
         props.home &&
         <table className='table table-bordered table-hover'>
@@ -20,6 +22,54 @@ function tablecontent (props) {
             </tr>
           </tbody>
         </table>
+      }
+      {
+        props.loading && props.loading === true &&
+        <div className='loading-icon-wrap'>
+          <img src={loadingicon} alt='loading icon' />
+        </div>
+      }
+      {
+        props.movies && props.movies !== null
+          ? props.movies.map((movie, key) =>
+            <div className='movie-content-wrap' key={key}>
+              <div className='row'>
+                <div className='poster col-md-5 col-12'>
+                  <img src={movie.Poster} alt='Poster' />
+                </div>
+                <div className='movie-info col-md-7 col-12'>
+                  <p>{movie.Title}</p>
+                  <p>Publish in <strong>{movie.Year}</strong></p>
+                  <p>Movie Type: {movie.Type}</p>
+                  <p>IMDB ID: {movie.imdbID}</p>
+                  <p>
+                    <Link className='btn-moviedetail' to={`/detail/${movie.imdbID}`}>Read more</Link>
+                  </p>
+                </div>
+              </div>
+            </div>
+          )
+          : <div className='movie-content-wrap'>{props.searchmessage}</div>
+      }
+      {
+        props.detail && props.detail !== null
+          ? <div className='movie-content-wrap'>
+            <div className='poster'>
+              <img src={props.detail.Poster} alt='Poster' />
+            </div>
+            <div>
+              <p>{props.detail.Title}</p>
+              <p>Publish in <strong>{props.detail.Year}</strong></p>
+              <p>Movie Type: {props.detail.Rated}</p>
+              <p>Genre: {props.detail.Genre}</p>
+              <p>Actor: {props.detail.Actors}</p>
+              <p>Language: {props.detail.Language}</p>
+              <p>Plot: {props.detail.Plot}</p>
+              <p>Production: {props.detail.Production}</p>
+              <p>Awards: {props.detail.Awards}</p>
+            </div>
+          </div>
+          : <div>{props.detailmessage}</div>
       }
       {
         props.info &&
@@ -47,4 +97,4 @@ function tablecontent (props) {
     </div>
   )
 }
-export default tablecontent
+export default Tablecontent
