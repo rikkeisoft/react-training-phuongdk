@@ -1,49 +1,74 @@
 import React, { Component } from 'react'
-import config from '../config'
+import config from '../libs/config'
 import Breadcrumbs from '../partials/breadcrumbs'
-import Tablecontent from '../partials/tablecontent'
-import axios from 'axios'
+import Detailcontent from '../partials/detailcontent'
+import app from '../libs/fetch'
 
 class Detail extends Component {
   constructor (props) {
     super(props)
     this.detail = props.match.params.id
     this.state = {
-      movies: null,
+      bookmark: false,
+      movie: null,
       message: null
     }
+    this.handleBookMark = this.handleBookMark.bind(this)
   }
 
   componentDidMount () {
-    this.getDetail()
+    this.getDetail(this.detail)
+    this.checkBookMark()
   }
-
-  getDetail () {
-    axios.get(`https://www.omdbapi.com/?i=${this.detail}&apikey=${config.api_key}`)
-      .then(results => {
-        if (results.data.Response === 'True') {
-          console.log(results)
-          this.setState({
-            movies: results.data
-          })
-        } else {
-          this.setState({
-            movies: null,
-            message: config.page.detail.invalid_message
-          })
-        }
+  
+  getDetail (id) {
+    app.fetchMovies(id, 'i')
+    .then(results => {
+      console.log(results)
+      this.setState({
+        movie: results.data
       })
-      .catch(error => console.log(error))
+    })
+    .catch(error => {
+      this.setState({
+        movie: null,
+        message: error
+      })
+    })
+  }
+  
+  checkBookMark() {
+    if (window.localStorage.length > 0 && window.localStorage.getItem(this.detail) !== null) {
+      this.setState({
+        bookmark: true
+      }) 
+    }
+  }
+  
+  handleBookMark(event) {
+    this.setState({
+      bookmark: !this.state.bookmark
+    })
+    if (this.state.bookmark === false) {
+      window.localStorage.setItem(this.state.movie.imdbID, this.state.movie.Title)
+    } else {
+      window.localStorage.removeItem(this.state.movie.imdbID)
+    }
   }
 
   render () {
-    const movies = this.state.movies
+    const { bookmark, movie, message } = this.state
     return (
       <div className='detail-wrapper component-wrapper'>
-        <Breadcrumbs title={config.page.detail.title} color={config.page.detail.color} bgcolor={config.page.detail.bgcolor} />
+        <Breadcrumbs detail={config.page.detail} />
         <div className='detail-content block-content'>
+          { message === null &&
+            <div className='bookmark-wrapper' onClick={this.handleBookMark}>
+              {bookmark === true ? <i className='fa fa-bookmark green'></i> : <i className='fa fa-bookmark red'></i>}
+            </div>
+          }  
           {
-            <Tablecontent detail={movies} detailmessage={this.state.message} />
+            <Detailcontent detail={movie} detailmessage={message} />
           }
         </div>
       </div>

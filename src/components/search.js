@@ -1,15 +1,17 @@
 import React, { Component } from 'react'
-import config from '../config'
+import config from '../libs/config'
 import Breadcrumbs from '../partials/breadcrumbs'
-import axios from 'axios'
-import Tablecontent from '../partials/tablecontent'
+import Searchcontent from '../partials/searchcontent'
+import Searchbox from '../partials/searchbox'
+import app from '../libs/fetch'
 
 export default class Search extends Component {
   constructor (props) {
     super(props)
     this.state = {
       loading: false,
-      movies: null,
+      movies: [],
+      totalPerPage: null,
       totalResults: null,
       search: '',
       message: null
@@ -20,81 +22,77 @@ export default class Search extends Component {
   }
 
   componentDidMount () {
-    this.getMovies(config.default_movies)
+    this.getMovies(config.defaultMovies)
   }
 
-  getMovies (keywords) {
+  getMovies (keyword) {
     if (!this.firstTimeInit) {
       this.setState({loading: true})
     }
-    axios.get(`https://www.omdbapi.com/?s=${keywords}&apikey=${config.api_key}`)
-      .then(results => {
-        if (results.data.Response === 'True') {
-          console.log(results)
-          this.setState({
-            movies: results.data.Search,
-            totalResults: results.data.totalResults
-          })
-        } else {
-          this.setState({
-            movies: null,
-            totalResults: null,
-            message: config.page.search.notfound_message
-          })
-        }
-        this.setState({
-          loading: false
-        })
+    app.fetchMovies(keyword)
+    .then(results => {
+      console.log(results)
+      this.setState({
+        movies: results.data.Search,
+        totalPerPage: results.data.Search.length,
+        totalResults: results.data.totalResults,
+        loading: false
       })
-      .catch(error => console.log(error))
+    })
+    .catch(error => {
+      this.setState({
+        movies: [],
+        totalResults: null,
+        message: error,
+        loading: false
+      })
+    })
     if (this.firstTimeInit) {
       this.firstTimeInit = false
     }
   }
 
-  handleSearch (event) {
-    let keyword = event.target.value
-    let newkeyword = keyword.trim()
-    let keyword_length = newkeyword.length
+  handleSearch (value) {
+    let keyWord = value
+    let newKeyWord = keyWord.trim()
+    let keywordLength = newKeyWord.length
     if (this.timeoutId) {
       clearTimeout(this.timeoutId)
     }
     this.setState({
-      search: keyword
+      search: keyWord
     })
-    if (keyword_length < 3) {
-      if (keyword_length === 0) {
+    if (keywordLength < 3) {
+      if (keywordLength === 0) {
         this.timeoutId = setTimeout(() => {
-          this.getMovies(config.default_movies)
+          this.getMovies(config.defaultMovies)
         }, 500)
         return
       }
       this.timeoutId = setTimeout(() => {
         this.setState({
-          movies: null,
+          movies: [],
           totalResults: null,
-          message: config.page.search.keywordlength_message
+          message: config.page.search.keyWordLengthMessage
         })
       }, 500)
       return
     }
     this.timeoutId = setTimeout(() => {
-      this.getMovies(newkeyword)
+      this.getMovies(newKeyWord)
     }, 500)
   }
 
   render () {
-    const movies = this.state.movies
+    const { loading, movies, totalPerPage, totalResults, search, message } = this.state
     return (
       <div className='search-wrapper'>
-        <Breadcrumbs title={config.page.search.title} color={config.page.search.color} bgcolor={config.page.search.bgcolor} />
+        <Breadcrumbs search={config.page.search} />
         <div className='search-content block-content'>
-          <div className='searchbox'>
-            <input type='text' name='search' placeholder='Search by movie name...' onChange={this.handleSearch} value={this.state.search} />
-            {this.state.totalResults && <p className='totalresults'>Total results: {this.state.totalResults}</p>}
-          </div>
+          <Searchbox onSearchChange={this.handleSearch} value={search} />
+          {this.state.totalResults && <p>Showing <span className='totalresults'>{totalPerPage}</span> of <span className='totalresults'>{totalResults}</span> movies</p>}
           {
-            <Tablecontent movies={movies || null} loading={this.state.loading} searchmessage={this.state.message} />
+          <Searchcontent movies={movies || []} loading={loading} searchmessage={message} />
           }
         </div>
       </div>

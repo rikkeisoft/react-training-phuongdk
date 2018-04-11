@@ -231,8 +231,23 @@ main .breadcrumbs .title {
 }
 /*MAIN-DETAIL*/
 .detail-content {
+  position: relative;
   text-align: center;
   padding:30px 0px;
+}
+.detail-content .bookmark-wrapper {
+  position: absolute;
+  cursor: pointer;
+  z-index: 1;
+  top: 20px;
+  right: 20px;
+  font-size: 30px;
+}
+.detail-content .bookmark-wrapper .red {
+  color: #ff4141d4;
+}
+.detail-content .bookmark-wrapper .green {
+  color: #03e435d4;
 }
 .detail-content .poster {
   margin-bottom: 10px;

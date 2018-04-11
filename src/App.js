@@ -24,10 +24,10 @@ class App extends Component {
                   <NavLink title='Searchpage' className='nav-link' activeClassName='navlink-active' to='/search'><i className='fa fa-search' aria-hidden='true' /></NavLink>
                 </li>
                 <li>
-                  <NavLink title='Infopage' className='nav-link' activeClassName='navlink-active' to='/info'><i className='fa fa-info-circle' aria-hidden='true' /></NavLink>
+                  <NavLink title='bookmarkpage' className='nav-link' activeClassName='navlink-active' to='/bookmark'><i className='fa fa-bookmark' aria-hidden='true' /></NavLink>
                 </li>
                 <li>
-                  <NavLink title='bookmarkpage' className='nav-link' activeClassName='navlink-active' to='/bookmark'><i className='fa fa-bookmark' aria-hidden='true' /></NavLink>
+                  <NavLink title='Infopage' className='nav-link' activeClassName='navlink-active' to='/info'><i className='fa fa-info-circle' aria-hidden='true' /></NavLink>
                 </li>
               </ul>
             </header>
@@ -44,5 +44,4 @@ class App extends Component {
     )
   }
 }
-
 export default App
