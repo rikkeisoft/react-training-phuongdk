@@ -63,7 +63,7 @@ class Detail extends Component {
       <div className='detail-wrapper component-wrapper'>
         <Breadcrumbs detail={config.page.detail} />
         <div className='detail-content block-content'>
-          { (message === null || movie !== null) &&
+          { (message === null && movie !== null) &&
             <div className='bookmark-wrapper' onClick={this.handleBookMark}>
               {bookmark === true ? <i className='fa fa-bookmark green' /> : <i className='fa fa-bookmark red' />}
             </div>
