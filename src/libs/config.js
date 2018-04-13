@@ -1,4 +1,3 @@
-import logo from '../imdb.png'
 const config = {
   apiKey: '5f404258',
   defaultMovies: 'Avengers',
@@ -25,8 +24,7 @@ const config = {
       appName: 'IMDB searching application',
       appDescription: 'An app that allow you to search through the Internet Movie Database with ease and quick succession',
       author: 'Do Ky Phuong',
-      division: 'Web Department Division 2',
-      logo: logo
+      division: 'Web Department Division 2'
     },
     detail: {
       title: 'detail',
@@ -37,7 +35,8 @@ const config = {
     bookmark: {
       title: 'bookmark',
       color: '#ffffff',
-      bgcolor: '#7eb700'
+      bgcolor: '#7eb700',
+      emptyMoviesMessage: 'Currently there are no bookmarked movies'
     }
   }
 }

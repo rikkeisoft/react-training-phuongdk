@@ -3,9 +3,9 @@ import React from 'react'
 function Detailcontent (page) {
   return (
     <div className='page-section-wrap'>
-        {
+      {
         page.detail && page.detail !== null
-         ? <div className='movie-content-wrap'>
+          ? <div className='movie-content-wrap'>
             <div className='poster'>
               <img src={page.detail.Poster} alt='Poster' />
             </div>
@@ -21,7 +21,7 @@ function Detailcontent (page) {
               <p>Awards: {page.detail.Awards}</p>
             </div>
           </div>
-         : <div>{page.detailmessage}</div>
+          : <div>{page.detailmessage}</div>
       }
     </div>
   )

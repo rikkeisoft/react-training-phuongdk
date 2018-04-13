@@ -20,32 +20,32 @@ class Detail extends Component {
     this.getDetail(this.detail)
     this.checkBookMark()
   }
-  
+
   getDetail (id) {
     app.fetchMovies(id, 'i')
-    .then(results => {
-      console.log(results)
-      this.setState({
-        movie: results.data
+      .then(results => {
+        console.log(results)
+        this.setState({
+          movie: results.data
+        })
       })
-    })
-    .catch(error => {
-      this.setState({
-        movie: null,
-        message: error
+      .catch(error => {
+        this.setState({
+          movie: null,
+          message: error
+        })
       })
-    })
   }
-  
-  checkBookMark() {
+
+  checkBookMark () {
     if (window.localStorage.length > 0 && window.localStorage.getItem(this.detail) !== null) {
       this.setState({
         bookmark: true
-      }) 
+      })
     }
   }
-  
-  handleBookMark(event) {
+
+  handleBookMark (event) {
     this.setState({
       bookmark: !this.state.bookmark
     })
@@ -54,6 +54,7 @@ class Detail extends Component {
     } else {
       window.localStorage.removeItem(this.state.movie.imdbID)
     }
+    this.props.callbackFromParent(window.localStorage.length)
   }
 
   render () {
@@ -64,9 +65,9 @@ class Detail extends Component {
         <div className='detail-content block-content'>
           { message === null &&
             <div className='bookmark-wrapper' onClick={this.handleBookMark}>
-              {bookmark === true ? <i className='fa fa-bookmark green'></i> : <i className='fa fa-bookmark red'></i>}
+              {bookmark === true ? <i className='fa fa-bookmark green' /> : <i className='fa fa-bookmark red' />}
             </div>
-          }  
+          }
           {
             <Detailcontent detail={movie} detailmessage={message} />
           }

@@ -5,11 +5,11 @@ import LoadingIndicator from './loadingindicator'
 function Searchcontent (page) {
   return (
     <div className='page-section-wrap'>
-        <LoadingIndicator icon={page.loading} />
+      <LoadingIndicator icon={page.loading} />
       {
         page.movies && page.movies.length > 0
           ? page.movies.map((movie, key) =>
-            <div className='movie-content-wrap' key={key}>
+            <div className='movie-content-wrap animated fadeIn' key={key} style={{WebkitAnimationDuration: '2s'}}>
               <div className='row'>
                 <div className='poster col-md-5 col-12'>
                   <img src={movie.Poster} alt='Poster' />

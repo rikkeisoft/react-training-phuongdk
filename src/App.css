@@ -125,6 +125,20 @@ header ul li:hover a:before {
   width: 100%;
 } 
 
+header .fa-bookmark {
+  position: relative;
+}
+
+header .bookmarkQty {
+  position: absolute;
+  top: -12px;
+  right: -17px;
+  font-size: 13px;
+  color: #ff722e;
+  background: #ffffff;
+  padding: 6px;
+  border-radius: 50%;
+}
 /*MAIN*/
 main .breadcrumbs {
   min-height: 100px;
@@ -251,4 +265,16 @@ main .breadcrumbs .title {
 }
 .detail-content .poster {
   margin-bottom: 10px;
+}
+/*MAIN-BOOKMARK*/
+.bookmark-content {
+  padding: 20px;
+}
+.bookmark-content h1 {
+  text-align: center;
+}
+.bookmark-content .link-bookmarked {
+  text-decoration: none;
+  margin-bottom: 10px;
+  display: inline-block;
 }

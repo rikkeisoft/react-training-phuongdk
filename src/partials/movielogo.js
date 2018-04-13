@@ -1,11 +1,11 @@
 import React from 'react'
-import config from '../libs/config'
+import logo from '../images/imdb.png'
 
 function MovieLogo () {
-    return (
-        <div className='img-wrapper'>
-            <img src={config.page.info.logo} alt='logo' />
-        </div>
-    )
+  return (
+    <div className='img-wrapper'>
+      <img src={logo} alt='logo' />
+    </div>
+  )
 }
 export default MovieLogo
