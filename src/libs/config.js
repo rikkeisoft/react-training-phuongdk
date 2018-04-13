@@ -15,7 +15,9 @@ const config = {
       title: 'search',
       color: '#ffffff',
       bgcolor: '#E34B4D',
-      keyWordLengthMessage: 'Please enter at least three characters without whitespaces'
+      keyWordLengthMessage: 'Please enter at least three characters without whitespaces',
+      loadmoreSuccess: 'Loading...',
+      loadmoreError: 'Cannot load any movies'
     },
     info: {
       title: 'info',

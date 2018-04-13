@@ -10,12 +10,14 @@ export default class Search extends Component {
     super(props)
     this.state = {
       loading: false,
+      loadmore: '',
       movies: [],
       totalPerPage: null,
       totalResults: null,
       search: '',
       message: null
     }
+    this.page = 1
     this.timeoutId = null
     this.firstTimeInit = true
     this.handleSearch = this.handleSearch.bind(this)
@@ -39,26 +41,26 @@ export default class Search extends Component {
     let scrollHeight, documentHeight
     documentHeight = document.body.scrollHeight
     scrollHeight = window.scrollY + window.innerHeight
-    if (this.timeoutId) {
-      clearTimeout(this.timeoutId)
-    }
-    if (scrollHeight >= documentHeight) {
+    if ((scrollHeight - 26) >= documentHeight) {
+      this.page++
       this.timeoutId = setTimeout(() => {
-        app.fetchMovies(keyWord, null, true)
+        this.setState({
+          loadmore: true
+        })
+        app.fetchMovies(keyWord, null, this.page)
           .then(results => {
             console.log(results)
             this.setState({
-              totalPerPage: results.data.Search.length,
+              movies: [...this.state.movies, ...results.data.Search],
+              totalPerPage: this.state.totalPerPage + results.data.Search.length,
               totalResults: results.data.totalResults,
-              loading: false
+              loadmore: ''
             })
           })
           .catch(error => {
+            console.log(error)
             this.setState({
-              movies: [],
-              totalResults: null,
-              message: error,
-              loading: false
+              loadmore: false
             })
           })
       }, 1000)
@@ -66,7 +68,6 @@ export default class Search extends Component {
   }
 
   getMovies (keyWord) {
-    window.page = 1
     if (!this.firstTimeInit) {
       this.setState({loading: true})
     }
@@ -97,6 +98,7 @@ export default class Search extends Component {
     let keyWord = value
     let newKeyWord = keyWord.trim()
     let keywordLength = newKeyWord.length
+    this.page = 1
     if (this.timeoutId) {
       clearTimeout(this.timeoutId)
     }
@@ -125,15 +127,24 @@ export default class Search extends Component {
   }
 
   render () {
-    const { loading, movies, totalPerPage, totalResults, search, message } = this.state
+    const { loading, loadmore, movies, totalPerPage, totalResults, search, message } = this.state
+    const { page: { search: { loadmoreSuccess, loadmoreError } } } = config
     return (
       <div className='search-wrapper'>
         <Breadcrumbs search={config.page.search} />
         <div className='search-content block-content'>
           <Searchbox onSearchChange={this.handleSearch} value={search} />
-          {this.state.totalResults && <p>Showing <span className='totalresults'>{totalPerPage}</span> of <span className='totalresults'>{totalResults}</span> movies</p>}
           {
-            <Searchcontent movies={movies || []} loading={loading} searchmessage={message} animationIn='bounceInLeft' animationOut='fadeOut' />
+            this.state.totalResults && <p>Showing <span className='totalresults'>{totalPerPage}</span> of <span className='totalresults'>{totalResults}</span> movies</p>
+          }
+          {
+            <Searchcontent movies={movies || []} loading={loading} searchmessage={message} />
+          }
+          {
+            loadmore === true && <p>{loadmoreSuccess}</p>
+          }
+          {
+            loadmore === false && <p>{loadmoreError}</p>
           }
         </div>
       </div>
