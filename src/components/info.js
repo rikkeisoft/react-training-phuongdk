@@ -1,20 +1,39 @@
-import React, { Component } from 'react'
-import config from '../config'
+import React from 'react'
+import config from '../libs/config'
 import Breadcrumbs from '../partials/breadcrumbs'
-import Tablecontent from '../partials/tablecontent'
+import MovieLogo from '../partials/movielogo'
 
-export default class Info extends Component {
-  render () {
-    return (
-      <div className='info-wrapper component-wrapper'>
-        <Breadcrumbs title={config.page.info.title} color={config.page.info.color} bgcolor={config.page.info.bgcolor} />
-        <div className='info-content block-content'>
-          <div className='img-wrapper'>
-            <img src={config.page.info.logo} alt='logo' />
-          </div>
-          <Tablecontent info={config.page.info} />
+function Info () {
+  const { page: { info: { appName, appDescription, author, division } } } = config
+  return (
+    <div className='info-wrapper component-wrapper'>
+      <Breadcrumbs info={config.page.info} />
+      <div className='info-content block-content'>
+        <MovieLogo />
+        <div className='page-section-wrap'>
+          <table className='table table-bordered table-hover'>
+            <tbody>
+              <tr>
+                <td className='info'>Application Name</td>
+                <td className='content'>{appName}</td>
+              </tr>
+              <tr>
+                <td className='info'>Description</td>
+                <td className='content'>{appDescription}</td>
+              </tr>
+              <tr>
+                <td className='info'>Author</td>
+                <td className='content'>{author}</td>
+              </tr>
+              <tr>
+                <td className='info'>Division</td>
+                <td className='content'>{division}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
-    )
-  }
+    </div>
+  )
 }
+export default Info
